@@ -13,16 +13,16 @@ namespace Ecommerce.Domain.Entities
         public int Estoque { get; set; }
         public DateTime DataCadastro { get; set; }
 
-        protected Produto() { }
+        //protected Produto() { }
 
-        public Produto(Guid id, string nome, string descricao, decimal preco, int estoque, DateTime dataCadastro)
+        public Produto(string nome, string descricao, decimal preco, int estoque)
         {
             Id = Guid.NewGuid();
             Nome = nome;
             Descricao = descricao;
             Preco = preco;
             Estoque = estoque;
-            DataCadastro = dataCadastro;
+            DataCadastro = DateTime.Now.Date;
         }
     }
 }
