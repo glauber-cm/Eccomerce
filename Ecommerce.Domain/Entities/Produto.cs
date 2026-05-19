@@ -24,5 +24,17 @@ namespace Ecommerce.Domain.Entities
             Estoque = estoque;
             DataCadastro = DateTime.Now.Date;
         }
+
+        public void Atualizar(
+            string nome,
+            string descricao,
+            decimal preco,
+            int estoque)
+        {
+            Nome = nome;
+            Descricao = descricao;
+            Preco = preco;
+            Estoque = estoque;
+        }
     }
 }
