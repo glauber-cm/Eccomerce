@@ -32,8 +32,15 @@ namespace Ecommerce.Application.Service
             await _repository.AdicionarAsync(produto); 
         }
 
-        public async Task AtualizarAsync(Produto produto)
+        public async Task AtualizarAsync(Guid id, string nome, string descricao, decimal preco, int estoque)
         {
+            var produto = await _repository.ObterPorIdAsync(id);
+
+            if (produto is null)
+                return;
+
+            produto.Atualizar(nome, descricao, preco, estoque);
+
             await _repository.AtualizarAsync(produto);
         }
 

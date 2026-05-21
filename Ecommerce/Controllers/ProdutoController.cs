@@ -40,5 +40,71 @@ namespace Ecommerce.Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var produto = await _service.ObterPorIdAsync(id);
+
+            if (produto is null)
+                return NotFound();
+
+            var viewModel = new ProdutoViewModel
+            {
+                Id = produto.Id,
+                Nome = produto.Nome,
+                Descricao = produto.Descricao,
+                Preco = produto.Preco,
+                Estoque = produto.Estoque
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ProdutoViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            await _service.AtualizarAsync(
+                model.Id,
+                model.Nome,
+                model.Descricao,
+                model.Preco,
+                model.Estoque);
+
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var produto = await _service.ObterPorIdAsync(id);
+
+            if (produto is null)
+                return NotFound();
+
+            var viewModel = new ProdutoViewModel
+            {
+                Id = produto.Id,
+                Nome = produto.Nome,
+                Descricao = produto.Descricao,
+                Preco = produto.Preco,
+                Estoque = produto.Estoque
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(ProdutoViewModel model)
+        {
+            await _service.RemoverAsync(model.Id);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

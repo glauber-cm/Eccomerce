@@ -4,6 +4,8 @@ namespace Ecommerce.Web.ViewModels
 {
     public class ProdutoViewModel
     {
+        public Guid Id { get; set; }
+
         [Required(ErrorMessage = "Informe o nome")]
         public string Nome { get; set; }
         
