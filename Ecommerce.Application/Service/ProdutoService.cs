@@ -25,21 +25,21 @@ namespace Ecommerce.Application.Service
             return await _repository.ObterPorIdAsync(id);
         }
 
-        public async Task AdicionarAsync(string nome, string descricao, decimal preco, int estoque)
+        public async Task AdicionarAsync(string nome, string descricao, decimal preco, int estoque, string? imageUrl)
         {
-            var produto = new Produto(nome, descricao, preco, estoque);
+            var produto = new Produto(nome, descricao, preco, estoque, imageUrl);
 
             await _repository.AdicionarAsync(produto); 
         }
 
-        public async Task AtualizarAsync(Guid id, string nome, string descricao, decimal preco, int estoque)
+        public async Task AtualizarAsync(Guid id, string nome, string descricao, decimal preco, int estoque, string? imageUrl)
         {
             var produto = await _repository.ObterPorIdAsync(id);
 
             if (produto is null)
                 return;
 
-            produto.Atualizar(nome, descricao, preco, estoque);
+            produto.Atualizar(nome, descricao, preco, estoque, imageUrl);
 
             await _repository.AtualizarAsync(produto);
         }

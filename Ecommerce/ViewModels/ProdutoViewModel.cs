@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace Ecommerce.Web.ViewModels
 {
@@ -6,17 +7,17 @@ namespace Ecommerce.Web.ViewModels
     {
         public Guid Id { get; set; }
 
-        [Required(ErrorMessage = "Informe o nome")]
         public string Nome { get; set; }
-        
-        [Required(ErrorMessage = "Informe a descrição")]
+         
         public string Descricao { get; set; }
 
-        [Required(ErrorMessage = "Informe o preço")]
         public decimal Preco { get; set; }
 
-        [Required(ErrorMessage = "Informe o estoque")]
         public int Estoque { get; set; }
+
+        public string? ImagemUrl { get; set; }
+
+        public IFormFile? ImagemUpload { get; set; }
 
     }
 }

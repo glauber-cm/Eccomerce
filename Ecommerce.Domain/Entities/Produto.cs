@@ -12,16 +12,18 @@ namespace Ecommerce.Domain.Entities
         public decimal Preco { get; set; }
         public int Estoque { get; set; }
         public DateTime DataCadastro { get; set; }
+        public string? ImageUrl { get; set; }
 
         //protected Produto() { }
 
-        public Produto(string nome, string descricao, decimal preco, int estoque)
+        public Produto(string nome, string descricao, decimal preco, int estoque, string? imageUrl)
         {
             Id = Guid.NewGuid();
             Nome = nome;
             Descricao = descricao;
             Preco = preco;
             Estoque = estoque;
+            ImageUrl = imageUrl;
             DataCadastro = DateTime.Now.Date;
         }
 
@@ -29,12 +31,14 @@ namespace Ecommerce.Domain.Entities
             string nome,
             string descricao,
             decimal preco,
-            int estoque)
+            int estoque,
+            string? imageUrl)
         {
             Nome = nome;
             Descricao = descricao;
             Preco = preco;
             Estoque = estoque;
+            ImageUrl = imageUrl;
         }
     }
 }
