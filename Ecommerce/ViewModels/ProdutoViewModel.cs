@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace Ecommerce.Web.ViewModels
 {
@@ -18,6 +19,10 @@ namespace Ecommerce.Web.ViewModels
         public string? ImagemUrl { get; set; }
 
         public IFormFile? ImagemUpload { get; set; }
+
+        public Guid CategoriaId { get; set; }
+
+        public IEnumerable<SelectListItem>? Categorias { get; set; }
 
     }
 }

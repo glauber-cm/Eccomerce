@@ -20,7 +20,9 @@ namespace Ecommerce.CrossCutting
 
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<ProdutoService>();
-            
+            services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+            services.AddScoped<CategoriaService>();
+
             return services;
         }
     }

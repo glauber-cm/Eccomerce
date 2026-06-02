@@ -1,0 +1,22 @@
+﻿@using Ecommerce.Web.ViewModels
+@model IEnumerable<CategoriaViewModel>
+
+<h2>Categorias</h2>
+
+<a asp-action="Create" class="btn btn-primary">Nova Categoria</a>
+
+<table class="table">
+    <thread>
+      <tr>
+          <th>Nome</th>
+      </tr>      
+    </thread>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.Nome</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -42,6 +42,18 @@
                     <span asp-validation-for="Estoque" class="text-danger"></span>
                 </div>
 
+                <div class="mb-3">
+                    <label asp-for="CategoriaId" class="form-label">
+                        Categoria
+                    </label>
+
+                    <select asp-for="CategoriaId"
+                            asp-items="Model.Categorias"
+                            class="form-control">
+                        <option value="">Selecione uma categoria</option>
+                    </select>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Atualizar</button>
 
                 <a asp-action="Index" class="btn btn-secondary">Voltar</a>

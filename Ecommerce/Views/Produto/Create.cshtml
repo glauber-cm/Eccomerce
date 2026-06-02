@@ -46,6 +46,18 @@
     </div>
 
     <div class="mb-3">
+        <label asp-for="CategoriaId" class="form-label">
+            Categoria
+        </label>
+
+        <select asp-for="CategoriaId"
+                asp-items="Model.Categorias"
+                class="form-control">
+            <option value="">Selecione uma categoria</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
         <label class="form-label">Imagem</label>
 
         <input asp-for="ImagemUpload" type="file" class="form-control" />

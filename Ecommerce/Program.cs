@@ -2,7 +2,6 @@
 using Ecommerce.CrossCutting;
 using Ecommerce.Web.Mapping;
 using FluentValidation;
-using FluentValidation.AspNetCore;
 using Ecommerce.Web.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,11 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddAutoMapper(cfg => {
+
+builder.Services.AddAutoMapper(cfg =>
+{
     cfg.AddProfile<MappingProfile>();
 });
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddFluentValidationClientsideAdapters();
+//builder.Services.AddFluentValidationAutoValidation();
+//builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<ProdutoViewModelValidator>();
 
 var app = builder.Build();

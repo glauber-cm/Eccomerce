@@ -8,7 +8,8 @@ namespace Ecommerce.Web.Mapping
     {
         public MappingProfile() 
         { 
-            CreateMap<Produto, ProdutoViewModel>().ReverseMap();        
+            CreateMap<Produto, ProdutoViewModel>().ReverseMap();
+            CreateMap<Categoria, CategoriaViewModel>().ReverseMap();
         }
     }
 }

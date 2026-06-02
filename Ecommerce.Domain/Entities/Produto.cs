@@ -14,7 +14,9 @@ namespace Ecommerce.Domain.Entities
         public DateTime DataCadastro { get; set; }
         public string? ImageUrl { get; set; }
 
-        //protected Produto() { }
+        public Guid CategoriaId { get; private set; }
+
+        public Categoria Categoria { get; private set; }
 
         public Produto(string nome, string descricao, decimal preco, int estoque, string? imageUrl)
         {
@@ -24,6 +26,7 @@ namespace Ecommerce.Domain.Entities
             Preco = preco;
             Estoque = estoque;
             ImageUrl = imageUrl;
+            //CategoriaId = categoriaId;
             DataCadastro = DateTime.Now.Date;
         }
 
