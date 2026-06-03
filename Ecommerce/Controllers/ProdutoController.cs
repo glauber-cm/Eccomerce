@@ -2,19 +2,21 @@
 using Ecommerce.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Ecommerce.Web.Controllers
 {
     public class ProdutoController : Controller
     {
         private readonly ProdutoService _service;
+        private readonly CategoriaService _categoriaService;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _enviroment;
 
-        public ProdutoController(ProdutoService service, IMapper mapper, IWebHostEnvironment enviroment)
+        public ProdutoController(ProdutoService service, CategoriaService categoriaService, IMapper mapper, IWebHostEnvironment enviroment)
         {
             _service = service;
+            _categoriaService = categoriaService;
             _mapper = mapper;
             _enviroment = enviroment;
         }
@@ -27,9 +29,20 @@ namespace Ecommerce.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var categorias = await _categoriaService.ObterTodosAsync();
+
+            var model = new ProdutoViewModel
+            {
+                Categorias = categorias.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Nome
+                })
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -57,7 +70,8 @@ namespace Ecommerce.Web.Controllers
                 model.Descricao,
                 model.Preco,
                 model.Estoque,
-                nomeImagem);
+                nomeImagem,
+                model.CategoriaId);
 
             return RedirectToAction(nameof(Index));
         }

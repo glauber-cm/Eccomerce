@@ -18,7 +18,7 @@ namespace Ecommerce.Domain.Entities
 
         public Categoria Categoria { get; private set; }
 
-        public Produto(string nome, string descricao, decimal preco, int estoque, string? imageUrl)
+        public Produto(string nome, string descricao, decimal preco, int estoque, string? imageUrl, Guid categoriaId)
         {
             Id = Guid.NewGuid();
             Nome = nome;
@@ -26,7 +26,7 @@ namespace Ecommerce.Domain.Entities
             Preco = preco;
             Estoque = estoque;
             ImageUrl = imageUrl;
-            //CategoriaId = categoriaId;
+            CategoriaId = categoriaId;
             DataCadastro = DateTime.Now.Date;
         }
 

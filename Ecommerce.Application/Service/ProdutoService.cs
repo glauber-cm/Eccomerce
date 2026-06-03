@@ -25,9 +25,9 @@ namespace Ecommerce.Application.Service
             return await _repository.ObterPorIdAsync(id);
         }
 
-        public async Task AdicionarAsync(string nome, string descricao, decimal preco, int estoque, string? imageUrl)
+        public async Task AdicionarAsync(string nome, string descricao, decimal preco, int estoque, string? imageUrl , Guid categoriaId)
         {
-            var produto = new Produto(nome, descricao, preco, estoque, imageUrl);
+            var produto = new Produto(nome, descricao, preco, estoque, imageUrl, categoriaId);
 
             await _repository.AdicionarAsync(produto); 
         }

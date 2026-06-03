@@ -26,9 +26,21 @@ namespace Ecommerce.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CategoriaViewModel model)
+        {
+            if(!ModelState.IsValid)
+                return View(model);
+
+            await _service.AdicionarAsync(model.Nome);
+
+            return RedirectToAction(nameof(Index));
         }
 
     }

@@ -6,6 +6,11 @@
 
 <h2>Produtos</h2>
 
+<a asp-action="Create"
+   class="btn btn-primary mb-3">
+    Novo Produto
+</a>
+
 @if (Model == null || !Model.Any())
 {
     <div class="alert alert-warning">
@@ -14,12 +19,6 @@
 }
 else
 {
-
-    <a asp-action="Create"
-           class="btn btn-primary mb-3">
-        Novo Produto
-    </a>
-
     <table class="table table-striped">
         <thread>
             <tr>
