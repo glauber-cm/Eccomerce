@@ -2,9 +2,6 @@
 using Ecommerce.Domain.Interfaces;
 using Ecommerce.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Ecommerce.Infrastructure.Repositories
 {
@@ -41,6 +38,7 @@ namespace Ecommerce.Infrastructure.Repositories
         public async Task<IEnumerable<Produto>> ObterTodosAsync()
         {
             return await _context.Produtos
+                        .Include(p => p.Categoria)
                         .AsNoTracking()
                         .ToListAsync() ?? new List<Produto>();
         }

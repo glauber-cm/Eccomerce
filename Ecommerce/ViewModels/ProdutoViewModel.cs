@@ -21,6 +21,7 @@ namespace Ecommerce.Web.ViewModels
         public IFormFile? ImagemUpload { get; set; }
 
         public Guid CategoriaId { get; set; }
+        public string CategoriaNome { get; set; } = string.Empty;
 
         public IEnumerable<SelectListItem>? Categorias { get; set; }
 
