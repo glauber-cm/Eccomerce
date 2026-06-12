@@ -1,0 +1,33 @@
+﻿@model Ecommerce.Domain.Entities.Carrinho
+
+<h2>Carrinho de Compras</h2>
+
+
+@if (!Model.Itens.Any())
+{
+    <p>Seu carrinho está vazio.</p>
+}
+else
+{
+    <table class="table">
+        <thread>
+            <tr>
+                <th>Produto</th>
+                <th>Qtde</th>
+                <th>Preço</th>
+                <th>SubTotal</th>
+            </tr>
+        </thread>
+        <tbody>
+            @foreach (var item in Model.Itens)
+            {
+                <tr>
+                    <td>@item.Produto.Nome</td>
+                    <td>@item.Quantidade</td>
+                    <td>@item.PrecoUnitario.ToString("C")</td>
+                    <td>@((item.Quantidade * item.PrecoUnitario).ToString("C"))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

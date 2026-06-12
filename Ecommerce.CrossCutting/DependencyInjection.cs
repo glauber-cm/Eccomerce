@@ -22,6 +22,8 @@ namespace Ecommerce.CrossCutting
             services.AddScoped<ProdutoService>();
             services.AddScoped<ICategoriaRepository, CategoriaRepository>();
             services.AddScoped<CategoriaService>();
+            services.AddScoped<ICarrinhoRepository, CarrinhoRepository>();
+            services.AddScoped<ICarrinhoService, CarrinhoService>();
 
             return services;
         }

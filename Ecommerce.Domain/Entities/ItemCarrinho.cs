@@ -15,9 +15,11 @@ namespace Ecommerce.Domain.Entities
         public Produto Produto { get; private set; }
         protected ItemCarrinho() { }
 
-        public ItemCarrinho(Guid produtoId, int quantidade, decimal precoUnitario)
+        public ItemCarrinho(Guid carrinhoId, Guid produtoId, int quantidade, decimal precoUnitario)
         {
-            ProdutoId = Guid.NewGuid();
+            Id = Guid.NewGuid();
+            CarrinhoId = carrinhoId;
+            ProdutoId = produtoId;
             Quantidade = quantidade;
             PrecoUnitario = precoUnitario;
         }

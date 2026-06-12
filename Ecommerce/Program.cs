@@ -18,6 +18,14 @@ builder.Services.AddAutoMapper(cfg =>
 //builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<ProdutoViewModelValidator>();
 
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(1);
+
+});
+
 var app = builder.Build();
 
 
@@ -31,8 +39,10 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseSession();
 app.UseAuthorization();
+
+
 
 app.MapStaticAssets();
 
