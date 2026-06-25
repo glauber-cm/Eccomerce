@@ -23,5 +23,16 @@ namespace Ecommerce.Domain.Entities
             Quantidade = quantidade;
             PrecoUnitario = precoUnitario;
         }
+
+        public void AumentarQuantidade()
+        {
+            Quantidade++;
+        }
+
+        public void DiminuirQuantidade()
+        {
+            if(Quantidade > 1) 
+               Quantidade--;
+        }
     }
 }

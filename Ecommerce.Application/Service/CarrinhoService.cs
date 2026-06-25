@@ -36,6 +36,18 @@ namespace Ecommerce.Application.Service
 
         }
 
+        public async Task AumentarQuantidadeAsync(Guid itemId)
+        {
+            var item = await _carrinhoRepository.ObterItemAsync(itemId);
+
+            if (item == null)
+                return;
+
+            item.AumentarQuantidade();
+
+            await _carrinhoRepository.SalvarAsync();
+        }
+
         public async Task<Guid> CriarCarrinhoAsync()
         {
             var carrinho = new Carrinho();
@@ -43,6 +55,18 @@ namespace Ecommerce.Application.Service
             await _carrinhoRepository.AdicionarAsync(carrinho);
 
             return carrinho.Id;
+        }
+
+        public async Task DiminuirQuantidadeAsync(Guid itemId)
+        {
+            var item = await _carrinhoRepository.ObterItemAsync(itemId);
+
+            if (item == null)
+                return;
+
+            item.DiminuirQuantidade();
+
+            await _carrinhoRepository.SalvarAsync();
         }
 
         public async Task<CarrinhoViewModel?> ObterCarrinhoAsync(Guid carrinhoId)

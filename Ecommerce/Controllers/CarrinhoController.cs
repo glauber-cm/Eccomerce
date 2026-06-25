@@ -41,7 +41,7 @@ namespace Ecommerce.Web.Controllers
 
             await _carrinhoService.AdicionarProdutoAsync(carrinhoId, produtoId, 1);
 
-            return RedirectToAction("Index", new {carrinhoId});
+            return RedirectToAction("Index", new { carrinhoId });
         }
 
         public async Task<IActionResult> Remover(Guid itemId)
@@ -50,7 +50,25 @@ namespace Ecommerce.Web.Controllers
 
             var carrinhoId = HttpContext.Session.GetString("CarrinhoId");
 
-            return RedirectToAction(nameof(Index), new {carrinhoId});
+            return RedirectToAction(nameof(Index), new { carrinhoId });
+        }
+
+        public async Task<IActionResult> Aumentar(Guid itemId)
+        {
+            await _carrinhoService.AumentarQuantidadeAsync(itemId);
+
+            var carrinhoId = HttpContext.Session.GetString("CarrinhoId");
+
+            return RedirectToAction(nameof(Index), new { carrinhoId });
+        }
+
+        public async Task<IActionResult> Diminuir(Guid itemId)
+        {
+            await _carrinhoService.DiminuirQuantidadeAsync(itemId);
+
+            var carrinhoId = HttpContext.Session.GetString("CarrinhoId");
+
+            return RedirectToAction(nameof(Index), new { carrinhoId });
         }
     }
 }

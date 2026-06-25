@@ -12,5 +12,7 @@ namespace Ecommerce.Domain.Interfaces
         Task AtualizaAsync(Carrinho carrinho);
         Task AdicionarItemAsync(ItemCarrinho item);
         Task RemoverItemAsync(Guid itemId);
+        Task<ItemCarrinho?> ObterItemAsync(Guid itemId);
+        Task SalvarAsync();
     }
 }

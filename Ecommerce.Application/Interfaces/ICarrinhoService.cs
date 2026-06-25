@@ -8,6 +8,8 @@ namespace Ecommerce.Application.Interfaces
         Task AdicionarProdutoAsync(Guid carrinhoId, Guid produtoId, int quantidade);
         Task<CarrinhoViewModel?> ObterCarrinhoAsync(Guid carrinhoId);
         Task RemoverItemAsync(Guid itemId);
+        Task AumentarQuantidadeAsync(Guid itemId);
+        Task DiminuirQuantidadeAsync(Guid itemId);
 
     }
 }

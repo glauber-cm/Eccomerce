@@ -54,5 +54,16 @@ namespace Ecommerce.Infrastructure.Repositories
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task<ItemCarrinho?> ObterItemAsync(Guid itemId)
+        {
+            return await _context.ItensCarrinho.FirstOrDefaultAsync(_ => _.Id == itemId);
+
+        }
+
+        public async Task SalvarAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
     }
 }
