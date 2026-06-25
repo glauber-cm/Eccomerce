@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ecommerce.Application.Service;
+using Ecommerce.Application.Interfaces;
 
 namespace Ecommerce.CrossCutting
 {

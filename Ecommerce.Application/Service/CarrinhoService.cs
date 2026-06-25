@@ -1,8 +1,7 @@
-﻿using Ecommerce.Domain.Entities;
+﻿using Ecommerce.Application.ViewModels;
+using Ecommerce.Domain.Entities;
 using Ecommerce.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Ecommerce.Application.Interfaces;
 
 namespace Ecommerce.Application.Service
 {
@@ -29,7 +28,7 @@ namespace Ecommerce.Application.Service
             if (produto == null)
                 throw new Exception("Produto não encontrado!");
 
-            var item = new ItemCarrinho(carrinho.Id,produto.Id, quantidade, produto.Preco);
+            var item = new ItemCarrinho(carrinho.Id, produto.Id, quantidade, produto.Preco);
 
             //carrinho.AdicionarItem(item);
 
@@ -46,9 +45,30 @@ namespace Ecommerce.Application.Service
             return carrinho.Id;
         }
 
-        public async Task<Carrinho?> ObterCarrinhoAsync(Guid carrinhoId)
+        public async Task<CarrinhoViewModel?> ObterCarrinhoAsync(Guid carrinhoId)
         {
-            return await _carrinhoRepository.ObterPorIdAsync(carrinhoId);
+            var carrinho = await _carrinhoRepository.ObterPorIdAsync(carrinhoId);
+
+            if (carrinho == null)
+                return null;
+
+            return new CarrinhoViewModel
+            {
+                Id = carrinho.Id,
+                Itens = carrinho.Itens.Select(item => new ItemCarrinhoViewModel
+                {
+                    Id = item.Id,
+                    ProdutoNome = item.Produto.Nome,
+                    Quantidade = item.Quantidade,
+                    PrecoUnitario = item.PrecoUnitario
+                }).ToList()
+            };
+        }
+
+        public async Task RemoverItemAsync(Guid itemId)
+        {
+            await _carrinhoRepository.RemoverItemAsync(itemId);
+         
         }
     }
 }

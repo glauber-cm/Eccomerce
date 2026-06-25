@@ -12,6 +12,5 @@ namespace Ecommerce.Domain.Interfaces
         Task AdicionarAsync(Categoria categoria);
         Task AtualizarAsync(Categoria categoria);
         Task RemoverAsync(Guid id);
-
     }
 }

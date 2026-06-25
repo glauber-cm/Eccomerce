@@ -42,5 +42,17 @@ namespace Ecommerce.Infrastructure.Repositories
                 .ThenInclude(i => i.Produto)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
+
+        public async Task RemoverItemAsync(Guid itemId)
+        {
+            var item = await _context.ItensCarrinho.FirstOrDefaultAsync(c => c.Id == itemId);
+
+            if (item is null)
+                return;
+
+            _context.ItensCarrinho.Remove(item);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

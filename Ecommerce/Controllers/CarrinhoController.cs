@@ -1,4 +1,5 @@
-﻿using Ecommerce.Domain.Entities;
+﻿using Ecommerce.Application.Interfaces;
+using Ecommerce.Domain.Entities;
 using Ecommerce.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,9 @@ namespace Ecommerce.Web.Controllers
         public async Task<IActionResult> Index(Guid carrinhoId)
         {
             var carrinho = await _carrinhoService.ObterCarrinhoAsync(carrinhoId);
+
+            if (carrinho == null)
+                return NotFound();
 
             return View(carrinho);
         }
@@ -38,6 +42,15 @@ namespace Ecommerce.Web.Controllers
             await _carrinhoService.AdicionarProdutoAsync(carrinhoId, produtoId, 1);
 
             return RedirectToAction("Index", new {carrinhoId});
+        }
+
+        public async Task<IActionResult> Remover(Guid itemId)
+        {
+            await _carrinhoService.RemoverItemAsync(itemId);
+
+            var carrinhoId = HttpContext.Session.GetString("CarrinhoId");
+
+            return RedirectToAction(nameof(Index), new {carrinhoId});
         }
     }
 }
