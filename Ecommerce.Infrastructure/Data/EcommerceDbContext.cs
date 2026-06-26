@@ -16,6 +16,9 @@ namespace Ecommerce.Infrastructure.Data
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Carrinho> Carrinhos { get; set; }
         public DbSet<ItemCarrinho> ItensCarrinho { get; set; }
+        public DbSet<Pedido> Pedidos { get; set; }
+        public DbSet<ItemPedido> ItensPedido { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

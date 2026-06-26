@@ -30,9 +30,17 @@ else
                     </td>
                     <td>@item.PrecoUnitario.ToString("C")</td>
                     <td>@((item.Quantidade * item.PrecoUnitario).ToString("C"))</td>
+                   
+
                     <td><a asp-action="Remover" asp-route-itemId="@item.Id" class="btn btn-danger btn-sm">Remover</a></td>
                 </tr>
             }
         </tbody>
     </table>
+    <div class="text-end mt-3">
+        <h4>Total: @Model.Total.ToString("C")</h4>
+        <a asp-controller="Pedido" asp-action="Finalizar" class="btn btn-success"> Finalizar Compra </a>
+    </div>
+
+   
 }
