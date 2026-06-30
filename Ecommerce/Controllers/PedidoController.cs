@@ -35,9 +35,22 @@ namespace Ecommerce.Web.Controllers
             return View();
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var pedidos = await _pedidoService.ObterTodosAsync();
+
+            return View(pedidos);
+        }
+
+        public async Task<IActionResult> Details(Guid id)
+        { 
+            var pedido = await _pedidoService.ObterPorIdAsync(id);
+
+            if (pedido == null)
+                return NotFound();
+
+            return View(pedido);
+        
         }
     }
 }

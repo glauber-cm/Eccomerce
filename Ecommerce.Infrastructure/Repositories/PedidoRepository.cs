@@ -27,7 +27,7 @@ namespace Ecommerce.Infrastructure.Repositories
         {
             return await _context.Pedidos
                 .Include(p => p.Itens)
-                .ThenInclude(i => i.Pedido)
+                .ThenInclude(i => i.Produto)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 

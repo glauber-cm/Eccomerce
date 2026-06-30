@@ -1,3 +1,4 @@
+using Ecommerce.Application.Service;
 using Ecommerce.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -6,9 +7,19 @@ namespace Ecommerce.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+
+        private readonly ProdutoService _produtoService;
+
+        public HomeController(ProdutoService produtoService)
         {
-            return View();
+            _produtoService = produtoService;
+        }
+
+        public async Task <IActionResult> Index()
+        {
+            var produtos = await _produtoService.ObterTodosAsync();
+
+            return View(produtos);
         }
 
         public IActionResult Privacy()

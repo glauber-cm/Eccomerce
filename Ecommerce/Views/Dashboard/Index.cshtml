@@ -1,0 +1,35 @@
+﻿@model Ecommerce.Application.ViewModels.DashboardViewModel
+
+<h2>Dashboard</h2>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card p-3">
+        <h5>Produtos</h5>
+        <h3>@Model.TotalProdutos</h3>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card p-3">
+            <h5>Categorias</h5>
+            <h3>@Model.TotalCategorias</h3>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card p-3">
+            <h5>Pedidos</h5>
+            <h3>@Model.TotalPedidos</h3>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card p-3">
+            <h5>Faturamento</h5>
+            <h3>@Model.FaturamentoTotal.ToString("C")</h3>
+        </div>
+    </div>
+
+
+</div>

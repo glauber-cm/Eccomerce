@@ -1,0 +1,35 @@
+﻿@model Ecommerce.Domain.Entities.Pedido
+
+<h2>Detalhes do Pedido</h2>
+
+<p><strong>Número:</strong> @Model.Id</p>
+<p><strong>Data:</strong> @Model.DataPedido.ToString("dd/MM/yyyy HH:mm")</p>
+<p><strong>Total:</strong> @Model.Total.ToString("C")</p>
+
+
+
+
+<table class="table table-striped">
+    <thread>
+        <tr>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Preço Unitário</th>
+            <th>SubTotal</th>
+        </tr>
+    </thread>
+
+    <tbody>
+        @foreach (var item in Model.Itens)
+        {
+            <tr>
+                <td>@item.ProdutoNome</td>
+                <td>@item.Quantidade</td>
+                <td>@item.PrecoUnitario.ToString("C")</td>
+                <td>@((item.Quantidade * item.PrecoUnitario).ToString("C"))</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Index" class="btn btn-secondary">Voltar</a>
+

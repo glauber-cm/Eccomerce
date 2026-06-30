@@ -30,7 +30,7 @@ namespace Ecommerce.Domain.Entities
             ProdutoNome = produtoNome;
             Quantidade = quantidade;
             PrecoUnitario = precoUnitario;
-            SubTotal = quantidade + precoUnitario;
+            SubTotal = quantidade * precoUnitario;
 
         }
     }

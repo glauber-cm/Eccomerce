@@ -44,7 +44,18 @@ namespace Ecommerce.Application.Service
             await _pedidoRepository.AdicionarAsync(pedido);
 
             return pedido.Id;
-
         }
+
+        public async Task<Pedido?> ObterPorIdAsync(Guid id)
+        {
+            return await _pedidoRepository.ObterPorIdAsync(id);
+        }
+
+        public async Task<IEnumerable<Pedido>> ObterTodosAsync()
+        {
+           return await _pedidoRepository.ObterTodosAsync();
+        }
+
+        
     }
 }

@@ -1,9 +1,29 @@
-﻿@{
-    ViewData["Title"] = "Home";
-}
+﻿@model IEnumerable<Ecommerce.Domain.Entities.Produto>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h2>Produtos</h2>
+
+<div class="row">
+    @foreach(var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                {
+                    <img src="~/images/produtos/@item.ImageUrl" class="card-img-top" style="height:220px; object-fit:cover" />
+                }
+
+                <div class="card-body">
+                    <h5 class="card-title">@item.Nome</h5>
+                    <p class="card-text">@item.Descricao</p>
+                    <p><strong>@item.Preco.ToString("C")</strong></p>
+
+                    <a asp-controller="Produto" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Detalhes</a>
+                    <a asp-controller="Carrinho" asp-action="Adicionar" asp-route-id="@item.Id" class="btn btn-success">Adicionar ao Carrinho</a>
+
+
+                </div>
+            </div>
+        </div>            
+    }
+
 </div>
-

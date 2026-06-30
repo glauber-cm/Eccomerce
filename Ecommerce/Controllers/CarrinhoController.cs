@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Interfaces;
+using Ecommerce.Application.ViewModels;
 using Ecommerce.Domain.Entities;
 using Ecommerce.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -14,24 +15,36 @@ namespace Ecommerce.Web.Controllers
             _carrinhoService = carrinhoService;
         }
 
-        public async Task<IActionResult> Index(Guid carrinhoId)
+        public async Task<IActionResult> Index()
         {
+            var carrinhoIdSession = HttpContext.Session.GetString("CarrinhoId");
+
+            if (string.IsNullOrEmpty(carrinhoIdSession))
+            {
+                return View(new CarrinhoViewModel());
+            }
+
+            var carrinhoId = Guid.Parse(carrinhoIdSession);
+
             var carrinho = await _carrinhoService.ObterCarrinhoAsync(carrinhoId);
 
             if (carrinho == null)
-                return NotFound();
+            {
+                return View(new CarrinhoViewModel());
+            }
 
             return View(carrinho);
         }
 
-        public async Task<IActionResult> Adicionar(Guid produtoId)
+        public async Task<IActionResult> Adicionar(Guid id)
         {
+            var produtoId = id;
+
             Guid carrinhoId;
 
             if (HttpContext.Session.GetString("CarrinhoId") == null)
             {
                 carrinhoId = await _carrinhoService.CriarCarrinhoAsync();
-
                 HttpContext.Session.SetString("CarrinhoId", carrinhoId.ToString());
             }
             else

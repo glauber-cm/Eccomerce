@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Ecommerce.Domain.Entities.Pedido>
+
+<h2>Pedidos</h2>
+
+<table class="table table-striped">
+    <thread>
+        <tr>
+            <th>Número</th>
+            <th>Data</th>
+            <th>Total</th>
+            <th>Itens</th>
+        </tr>
+    </thread>
+
+    <tbody>
+        @foreach (var pedido in Model)
+        {
+            <tr>
+                <td>@pedido.Id</td>
+                <td>@pedido.DataPedido.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@pedido.Total.ToString("C")</td>
+                <td>@pedido.Itens.Count</td>
+                <td><a asp-action="Details" asp-route-id="@pedido.Id" class="btn btn-info btn-sm">Detalhes</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
