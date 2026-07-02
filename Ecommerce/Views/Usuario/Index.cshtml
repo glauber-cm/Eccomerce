@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Ecommerce.Web.Models.UsuarioViewModel>
+
+<h2>Produtos</h2>
+
+<table class="table table-striped">
+    <thread>
+        <tr>
+            <th>Email</th>
+            <th>Perfil</th>
+            <th>Ações</th>
+        </tr>
+    </thread>
+
+    <tbody>
+        @foreach (var usuario in Model)
+        {
+            <tr>
+                <td>@usuario.Email</td>
+                <td>@usuario.Perfil</td>
+                <td>
+                    <a asp-action="AlterarPerfil" asp-route-usuarioId="@usuario.Id" class="btn btn-warning btn-sm">Alterar Perfil</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

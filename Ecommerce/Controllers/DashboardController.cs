@@ -1,10 +1,12 @@
 ﻿using Ecommerce.Application.ViewModels;
 using Ecommerce.Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Web.Controllers
 {
+    //[Authorize(Roles = "Admin")]
     public class DashboardController : Controller
     {
         private readonly EcommerceDbContext _context;

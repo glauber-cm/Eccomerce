@@ -1,0 +1,26 @@
+﻿@model Ecommerce.Web.Models.AlterarPerfilViewModel
+
+<h2>Alterar Perfil</h2>
+
+<form asp-action="AlterarPerfil" method="post">
+    <input type="hidden" asp-for="UsuarioId" />
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input asp-for="Email"class="form-control" readonly  />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PerfilSelecionado" class="form-label">Perfil</label>
+        <select asp-for="PerfilSelecionado" asp-items="Model.Perfis" class="form-control" />
+        <option value="">Selecione um perfil</option>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Salvar
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Voltar
+    </a>
+
+</form>

@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Ecommerce.Application.Service;
 using Ecommerce.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Web.Controllers
 {
+    //[Authorize(Roles = "Admin")]
     public class CategoriaController : Controller
     {
         private readonly CategoriaService _service;

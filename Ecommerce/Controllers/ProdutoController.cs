@@ -3,9 +3,11 @@ using Ecommerce.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ecommerce.Web.Controllers
 {
+    //[Authorize(Roles = "Admin")]
     public class ProdutoController : Controller
     {
         private readonly ProdutoService _service;

@@ -1,12 +1,14 @@
 ﻿using Ecommerce.Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Ecommerce.Infrastructure.Data
 {
-    public class EcommerceDbContext : DbContext
+    public class EcommerceDbContext : IdentityDbContext
     {
         public EcommerceDbContext(DbContextOptions options) : base(options)
         {

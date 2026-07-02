@@ -3,12 +3,18 @@ using Ecommerce.CrossCutting;
 using Ecommerce.Web.Mapping;
 using FluentValidation;
 using Ecommerce.Web.Validators;
+using Ecommerce.Infrastructure.Data;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddDefaultIdentity<IdentityUser>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<EcommerceDbContext>();
+
 
 builder.Services.AddAutoMapper(cfg =>
 {
@@ -40,8 +46,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseSession();
+app.UseAuthentication();
 app.UseAuthorization();
-
 
 
 app.MapStaticAssets();
