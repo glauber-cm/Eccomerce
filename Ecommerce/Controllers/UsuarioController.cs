@@ -1,4 +1,5 @@
-﻿using Ecommerce.Web.Models;
+﻿using Ecommerce.Infrastructure.Identity;
+using Ecommerce.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,10 +7,10 @@ namespace Ecommerce.Web.Controllers
 {
     public class UsuarioController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UsuarioController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UsuarioController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -82,6 +83,55 @@ namespace Ecommerce.Web.Controllers
             await _userManager.AddToRoleAsync(usuario, model.PerfilSelecionado);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MeuPerfil()
+        {
+            var usuario = await _userManager.GetUserAsync(User);
+
+            if (usuario == null)
+                return RedirectToAction("Login", "Account");
+
+            var model = new MeuPerfilViewModel
+            {
+                NomeCompleto = usuario.NomeCompleto,
+                Email = usuario.Email ?? string.Empty,
+                Telefone = usuario.PhoneNumber
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MeuPerfil(MeuPerfilViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var usuario = await _userManager.GetUserAsync(User);
+
+            if (usuario == null)
+                return RedirectToAction("Login", "Account");
+
+            usuario.NomeCompleto = model.NomeCompleto;
+            usuario.Email = model.Email;
+            usuario.UserName = model.Email;
+            usuario.PhoneNumber = model.Telefone;
+
+            var result = await _userManager.UpdateAsync(usuario);
+
+            if (result.Succeeded)
+            {
+                TempData["Sucesso"] = "Perfil atualizado com sucesso.";
+                return RedirectToAction(nameof(MeuPerfil));
+            }
+
+            foreach (var erro in result.Errors)
+                ModelState.AddModelError("", erro.Description);
+
+            return View(model);
+
         }
     }
 }

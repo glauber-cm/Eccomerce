@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.ViewModels;
+using Ecommerce.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,11 +7,11 @@ namespace Ecommerce.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -36,7 +37,7 @@ namespace Ecommerce.Web.Controllers
                 lockoutOnFailure: false);
 
             if (result.Succeeded)
-                return RedirectToAction("Index", "Loja");
+                return RedirectToAction("Index", "Produto");
 
             ModelState.AddModelError("", "Login inválido");
             
@@ -59,7 +60,7 @@ namespace Ecommerce.Web.Controllers
             if (!await _roleManager.RoleExistsAsync("Cliente"))
                  await _roleManager.CreateAsync(new IdentityRole("Cliente"));
 
-            var user = new IdentityUser
+            var user = new ApplicationUser
             {
                 UserName = model.Email,
                 Email = model.Email,
@@ -73,7 +74,7 @@ namespace Ecommerce.Web.Controllers
                 await _userManager.AddToRoleAsync(user, "Cliente");
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
-                return RedirectToAction("Index", "Loja");
+                return RedirectToAction("Index", "Home");
             }
 
             foreach (var error in result.Errors)
@@ -87,7 +88,7 @@ namespace Ecommerce.Web.Controllers
         {
             await _signInManager.SignOutAsync();
 
-            return RedirectToAction("Index", "Loja");
+            return RedirectToAction("Index", "Home");
         }
 
     

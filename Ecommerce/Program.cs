@@ -5,13 +5,14 @@ using FluentValidation;
 using Ecommerce.Web.Validators;
 using Ecommerce.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
+using Ecommerce.Infrastructure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddDefaultIdentity<IdentityUser>()
+builder.Services.AddDefaultIdentity<ApplicationUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<EcommerceDbContext>();
 

@@ -1,0 +1,37 @@
+﻿@model Ecommerce.Web.Models.MeuPerfilViewModel
+
+<h2>Meu Perfil</h2>
+
+@if(TempData["Sucesso"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Sucesso"]
+    </div>
+}
+
+<form asp-action="MeuPerfil" method="post">
+    <div class="mb-3">
+        <label asp-for="NomeCompleto" class="form-label"></label>
+        <input asp-for="NomeCompleto" class="form-control" />
+        <span asp-validation-for="NomeCompleto" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+
+    <div class="mb-3">
+        <label asp-for="Telefone" class="form-label"></label>
+        <input asp-for="Telefone" class="form-control" />
+        <span asp-validation-for="Telefone" class="text-danger"></span>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">
+        Salvar Alterações
+    </button>
+
+</form>

@@ -3,16 +3,16 @@
 <h2>Login</h2>
 
 <form asp-action="Login" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
     <div class="mb-3">
         <label asp-for="Email" class="form-label"></label>
         <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="Senha" class="form-label"></label>
-        <input asp-for="Senha" class="form-control" />
-        <span asp-validation-for="Senha" class="text-danger"></span>
+        <input asp-for="Senha" type="password" class="form-control" />
     </div>
 
     <button type="submit" class="btn btn-primary">
@@ -22,5 +22,4 @@
     <a asp-action="Register" class="btn btn-link">
         Criar conta
     </a>
-
 </form>
