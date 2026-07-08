@@ -2,6 +2,7 @@
 using Ecommerce.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Ecommerce.Web.Controllers
 {
@@ -54,13 +55,15 @@ namespace Ecommerce.Web.Controllers
                 UsuarioId = usuario.Id,
                 Email = usuario.Email ?? "",
                 PerfilSelecionado = roles.FirstOrDefault() ?? "",
-                Perfis = perfis.Select(p => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-                {
-                    Value = p,
-                    Text = p
-                })
+                Perfis = _roleManager.Roles
+                            .Select(r => new SelectListItem
+                            {
+                                Value = r.Name,
+                                Text = r.Name
+                            })
+                            .ToList()
             };
-
+            
             return View(model);
         }
 
