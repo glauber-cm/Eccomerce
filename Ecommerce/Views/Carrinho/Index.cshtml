@@ -1,46 +1,192 @@
 ﻿@model Ecommerce.Application.ViewModels.CarrinhoViewModel
 
-<h2>Carrinho de Compras</h2>
+@{
+    ViewData["Title"] = "Carrinho";
+}
 
+<div class="cart-page-header">
+    <div>
+        <span class="cart-page-eyebrow">Sua compra</span>
+        <h1>Carrinho de compras</h1>
+    </div>
 
-@if (!Model.Itens.Any())
+    @if (!Model.EstaVazio)
+    {
+        <span class="cart-items-count">
+            @Model.QuantidadeTotal item(ns)
+        </span>
+    }
+</div>
+
+@if (Model.EstaVazio)
 {
-    <p>Seu carrinho está vazio.</p>
+    <section class="empty-cart">
+        <div class="empty-cart-icon">
+            <i class="bi bi-cart-x"></i>
+        </div>
+
+        <h2>Seu carrinho está vazio.</h2>
+
+        <p>
+            Explore a loja e adicione produtos para continuar sua compra.
+        </p>
+
+        <a asp-controller="Loja" asp-action="Index" class="btn btn-warning bt-lg">
+            <i class="bi bi-bag"></i>
+            Ir para a loja
+        </a>
+    </section>
 }
 else
 {
-    <table class="table">
-        <thread>
-            <tr>
-                <th>Produto</th>
-                <th>Qtde</th>
-                <th>Preço</th>
-                <th>SubTotal</th>
-                <th>Ações</th>
-            </tr>
-        </thread>
-        <tbody>
+    <div class="cart-layout">
+        <section class="cart-products">
             @foreach (var item in Model.Itens)
             {
-                <tr>
-                    <td>@item.ProdutoNome</td>
-                    <td><a asp-action="Diminuir" asp-route-itemId="@item.Id" class="btn btn_secondary btn-sm">-</a>
-                    <span class="mx-2">@item.Quantidade</span>
-                    <a asp-action="Aumentar" asp-route-itemId="@item.Id" class="btn btn_secondary btn-sm">+</a>
-                    </td>
-                    <td>@item.PrecoUnitario.ToString("C")</td>
-                    <td>@((item.Quantidade * item.PrecoUnitario).ToString("C"))</td>
-                   
+                <article class="cart-product">
+                    <a asp-controller="Loja" asp-action="Details" asp-route-id="@item.ProdutoId" class="cart-product-image">
+                        @if (!string.IsNullOrWhiteSpace(item.ProdutoImageUrl))
+                        {
+                            <img src="~/images/produtos/@item.ProdutoImageUrl" alt="@item.ProdutoNome" />
+                        }
+                        else
+                        {
+                            <div class="cart-product-placeholder">
+                                <i class="bi bi-image"></i>
+                            </div>
+                        }
+                    </a>
+                    <div class="cart-product-info">
+                        <a asp-controller="Loja" asp-action="Details" asp-route-id="@item.ProdutoId" class="cart-product-name">
+                            @item.ProdutoNome
+                        </a>
+                        <span class="cart-product-avalability">
+                            Em estoque
+                        </span>
 
-                    <td><a asp-action="Remover" asp-route-itemId="@item.Id" class="btn btn-danger btn-sm">Remover</a></td>
-                </tr>
+                        <button type="button" class="cart-remove-link" data-bs-toggle="modal" data-bs-target="#removeItemModal-@item.Id">
+                            <i class="bi bi-trash"></i>
+                            Remover
+                        </button>
+                    </div>
+
+                    <div class="cart-product-quantity">
+                        <span class="cart-control-label">
+                            Quantidade
+                        </span>
+
+                        <div class="quantity-control">
+                            <a asp-action="Diminuir" asp-route-itemId="@item.Id" class="quantity-button" aria-label="Diminuir quantidade">
+                                <i class="bi bi-dash"></i>
+                            </a>
+
+                            <span class="quantity-value">
+                                @item.Quantidade
+                            </span>
+
+                            <a asp-action="Aumentar" asp-route-itemId="@item.Id" class="quantity-button" aria-label="Aumentar quantidade">
+                                <i class="bi bi-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="cart-product-price">
+                        <span class="cart-unit-price">
+                            @item.PrecoUnitario.ToString("C");
+                            <small>cada</small>
+                        </span>
+
+                        <strong>
+                            @item.SubTotal.ToString("C");
+                        </strong>
+                    </div>
+                </article>
+
+                <div class="modal fade" id="removeItemModal-@item.Id" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    Remover produto
+                                </h5>
+
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                Deseja remover
+                                <strong>@item.ProdutoNome</strong>
+                                do carrinho?
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                    Cancelar
+                                </button>
+
+                                <a asp-action="Remover" asp-route-itemId="@item.Id" class="btn btn-danger">
+                                    Remover
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
-        </tbody>
-    </table>
-    <div class="text-end mt-3">
-        <h4>Total: @Model.Total.ToString("C")</h4>
-        <a asp-controller="Pedido" asp-action="Finalizar" class="btn btn-success"> Finalizar Compra </a>
-    </div>
 
-   
+            <div class="cart-continue">
+                <a asp-controller="Loja" asp-action="Index" class="btn btn-outline-dark">
+                    <i class="bi bi-arrow-left"></i>
+                    Continuar comprando
+                </a>
+            </div>
+        </section>
+
+        <aside class="cart-summary">
+            <h2>Resumo do pedido</h2>
+
+            <div class="cart-summary-row">
+                <span>
+                    Subtotal (@Model.QuantidadeTotal item(ns))
+                </span>
+
+                <strong>@Model.Subtotal.ToString("C")</strong>
+            </div>
+
+            <div class="cart-summary-row">
+                <span>Frete</span>
+
+                @if (Model.Frete == 0)
+                {
+                    <strong class="text-success">Grátis</strong>
+                }
+                else
+                {
+                    <strong class="text-success">@Model.Frete.ToString("C")</strong>
+                }
+            </div>
+
+            <hr />
+
+            <div class="cart-summary-total">
+                <span>Total</span>
+                <strong>@Model.Total.ToString("C")</strong>
+            </div>
+
+            <p class="cart-summary-installment">
+                Em até 10x sem juros
+            </p>
+
+            <a asp-controller="Pedido" asp-action="Finalizar" class="btn btn-warning btn-lg w-100">
+                Ir para o checkout
+            </a>
+
+            <div class="cart-security">
+                <i class="bi bi-shield-lock"></i>
+                <span>
+                    Compra segura e dados protegidos
+                </span>
+            </div>
+        </aside>
+    </div>
 }

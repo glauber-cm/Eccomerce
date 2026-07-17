@@ -79,10 +79,15 @@ namespace Ecommerce.Application.Service
             return new CarrinhoViewModel
             {
                 Id = carrinho.Id,
+
+                Frete = 0,
+
                 Itens = carrinho.Itens.Select(item => new ItemCarrinhoViewModel
                 {
                     Id = item.Id,
+                    ProdutoId = item.ProdutoId,
                     ProdutoNome = item.Produto.Nome,
+                    ProdutoImageUrl = item.Produto.ImageUrl,
                     Quantidade = item.Quantidade,
                     PrecoUnitario = item.PrecoUnitario
                 }).ToList()

@@ -24,37 +24,43 @@ namespace Ecommerce.Web.Controllers
                 return View(new CarrinhoViewModel());
             }
 
-            var carrinhoId = Guid.Parse(carrinhoIdSession);
-
-            var carrinho = await _carrinhoService.ObterCarrinhoAsync(carrinhoId);
-
-            if (carrinho == null)
+            if (!Guid.TryParse(carrinhoIdSession, out var carrinhoId))
             {
+                HttpContext.Session.Remove("CarrinhoId");
+
                 return View(new CarrinhoViewModel());
             }
 
-            return View(carrinho);
+            var carrinho = await _carrinhoService.ObterCarrinhoAsync(carrinhoId);
+
+            return View(carrinho ?? new CarrinhoViewModel());
         }
 
-        public async Task<IActionResult> Adicionar(Guid id)
+        public async Task<IActionResult> Adicionar(Guid produtoId)
         {
-            var produtoId = id;
+            if (produtoId == Guid.Empty)
+            {
+                return BadRequest("Produto inválido.");
+            }
 
             Guid carrinhoId;
 
-            if (HttpContext.Session.GetString("CarrinhoId") == null)
+            var carrinhoIdSession = HttpContext.Session.GetString("CarrinhoId");
+
+
+            if (string.IsNullOrWhiteSpace(carrinhoIdSession))
             {
                 carrinhoId = await _carrinhoService.CriarCarrinhoAsync();
                 HttpContext.Session.SetString("CarrinhoId", carrinhoId.ToString());
             }
             else
             {
-                carrinhoId = Guid.Parse(HttpContext.Session.GetString("CarrinhoId")!);
+                carrinhoId = Guid.Parse(carrinhoIdSession);
             }
 
             await _carrinhoService.AdicionarProdutoAsync(carrinhoId, produtoId, 1);
 
-            return RedirectToAction("Index", new { carrinhoId });
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Remover(Guid itemId)

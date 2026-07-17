@@ -59,6 +59,8 @@ namespace Ecommerce.Web.Controllers
 
             if (!await _roleManager.RoleExistsAsync("Cliente"))
                  await _roleManager.CreateAsync(new IdentityRole("Cliente"));
+            else
+                await _roleManager.CreateAsync(new IdentityRole("Admin"));
 
             var user = new ApplicationUser
             {
@@ -71,7 +73,11 @@ namespace Ecommerce.Web.Controllers
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, "Cliente");
+                if (await _roleManager.RoleExistsAsync("Cliente"))
+                    await _userManager.AddToRoleAsync(user, "Cliente");
+                else
+                    await _userManager.AddToRoleAsync(user, "Admin");
+
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
                 return RedirectToAction("Index", "Home");
@@ -84,6 +90,7 @@ namespace Ecommerce.Web.Controllers
 
         }
 
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

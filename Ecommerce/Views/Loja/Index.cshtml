@@ -1,0 +1,234 @@
+﻿@model Ecommerce.Web.Models.LojaIndexViewModel
+
+@{
+    ViewData["Title"] = "Loja";
+}
+
+<form asp-action="Index" method="get" class="store-filter mb-4">
+    <div>
+        <label asp-for="Busca" class="form-label">
+            Pesquisar
+        </label>
+
+        <input asp-for="Busca" class="form-control" placeholder="Nome ou descrição..." />
+    </div>
+
+    <div>
+        <label asp-for="CategoriaId" class="form-label">
+            Categoria
+        </label>
+        <select asp-for="CategoriaId" asp-items="Model.Categorias" class="form-select">
+            <option value="">Todas as categorias</option>
+        </select>
+    </div>
+
+    <div>
+        <label asp-for="Ordenacao" class="form-label">
+            Ordenar por
+        </label>
+
+        <select asp-for="Ordenacao" class="form-select">
+            <option value="">Nome</option>
+            <option value="menor-preco">Menor preço</option>
+            <option value="maior-preco">Maior preço</option>
+            <option value="mais-recentes">Mais recentes</option>
+        </select>
+    </div>
+    <div class="store-filter-actions">
+        <button type="submit" class="btn btn-warning">
+            <i class="bi bi-funnel"></i>
+            Filtrar
+        </button>
+
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            Limpar
+        </a>
+    </div>
+</form>
+
+
+
+<section class="store-hero mb-4">
+    <div>
+        <span class="store-eyebrow">Ofertas selecionadas</span>
+
+        <h1>Encontre o produto ideal para você</h1>
+
+        <p>
+            Produtos organizados por categoria, com compra rápida e segura.
+        </p>
+    </div>
+</section>
+
+@if (!string.IsNullOrWhiteSpace(Model.Busca))
+{
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <p class="mb-0">
+            Resultados para:
+            <strong>@Model.Busca</strong>
+        </p>
+    </div>
+}
+
+<p class="text-muted mb-3">
+    @Model.TotalItens produto(s) encontrado(s)
+</p>
+
+
+@if (Model == null || !Model.Produtos.Any())
+{
+    <div class="empty-store">
+        <i class="bi bi-search"></i>
+
+        <h3>Nenhum produto encontrado</h3>
+
+        <p>
+            Tente pesquisar por outro nome ou consulte novamente mais tarde.
+        </p>
+    </div>
+}
+else
+{
+    <div class="product-grid">
+        @foreach (var produto in Model.Produtos)
+        {
+            <article class="product-card">
+
+                <a asp-controller="Loja"
+                   asp-action="Details"
+                   asp-route-id="@produto.Id"
+                   class="product-image-container">
+
+                    @if (!string.IsNullOrWhiteSpace(produto.ImageUrl))
+                    {
+                        <img src="~/images/produtos/@produto.ImageUrl"
+                             alt="@produto.Nome"
+                             class="product-image" />
+                    }
+                    else
+                    {
+                        <div class="product-image-placeholder">
+                            <i class="bi bi-image"></i>
+                        </div>
+                    }
+                </a>
+
+                <div class="product-card-body">
+
+                    <span class="product-category">
+                        @(produto.Categoria?.Nome ?? "Sem categoria")
+                    </span>
+
+                    <h2 class="product-title">
+                        <a asp-controller="Loja"
+                           asp-action="Details"
+                           asp-route-id="@produto.Id">
+                            @produto.Nome
+                        </a>
+                    </h2>
+
+                    <p class="product-description">
+                        @produto.Descricao
+                    </p>
+
+                    <div class="product-stock">
+                        @if (produto.Estoque > 0)
+                        {
+                            <span class="text-success">
+                                Em estoque
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">
+                                Indisponível
+                            </span>
+                        }
+                    </div>
+
+                    <div class="product-price">
+                        @produto.Preco.ToString("C")
+                    </div>
+
+                    <div class="product-actions">
+                        <a asp-controller="Loja"
+                           asp-action="Details"
+                           asp-route-id="@produto.Id"
+                           class="btn btn-outline-dark">
+                            Ver detalhes
+                        </a>
+
+                        @if (produto.Estoque > 0)
+                        {
+                            <a asp-controller="Carrinho"
+                               asp-action="Adicionar"
+                               asp-route-produtoId="@produto.Id"
+                               class="btn btn-warning">
+                                <i class="bi bi-cart-plus"></i>
+                                Adicionar
+                            </a>
+                        }
+                    </div>
+
+                </div>
+            </article>
+        }
+    </div>
+
+    @if (Model.TotalPaginas > 1)
+    {
+        <nav class="mt-5" aria-label="Paginação da loja">
+            <ul class="pagination justify-content-center">
+                @if (Model.TemPaginaAnterior)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-busca="@Model.Busca"
+                           asp-route-categoriaId="@Model.CategoriaId"
+                           asp-route-ordenacao="@Model.Ordenacao"
+                           asp-route-pagina="@(Model.PaginaAtual - 1)">
+                            Anterior
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">Anterior</span>
+                    </li>
+                }
+
+                @for (var pagina = 1; pagina <= Model.TotalPaginas; pagina++)
+                {
+                    <li class="page-item @(pagina == Model.TotalPaginas ? "active" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-busca="@Model.Busca" asp-route-categoriaId="@Model.CategoriaId"
+                           asp-route-ordenacao="@Model.Ordenacao" asp-route-pagina="@pagina">
+                            @pagina
+                        </a>
+                    </li>
+                }
+
+                @if (Model.TemProximaPagina)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-busca="@Model.Busca"
+                           asp-route-categoriaId="@Model.CategoriaId"
+                           asp-route-ordenacao="@Model.Ordenacao"
+                           asp-route-pagina="@(Model.PaginaAtual + 1)">
+                            Próxima
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">Próxima</span>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+}

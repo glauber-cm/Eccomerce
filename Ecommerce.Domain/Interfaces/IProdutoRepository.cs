@@ -12,5 +12,6 @@ namespace Ecommerce.Domain.Interfaces
         Task AdicionarAsync(Produto produto);
         Task AtualizarAsync(Produto produto);
         Task RemoverAsync(Guid id);
+        Task<(IReadOnlyList<Produto> Itens, int TotalItens)> BuscarLojaAsync(string? busca, Guid? categoriaId, string? ordenacao, int pagina, int tamanhoPagina);
     }
 }

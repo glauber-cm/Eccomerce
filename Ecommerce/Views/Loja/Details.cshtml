@@ -1,0 +1,62 @@
+﻿@model Ecommerce.Domain.Entities.Produto
+
+@{
+    ViewData["Title"] = Model.Nome;
+}
+
+
+<div class="product-detaisl">
+    <section class="product-details-image">
+        @if(!string.IsNullOrWhiteSpace(Model.ImageUrl))
+        {
+            <img src="~/images/produtos/@Model.ImageUrl" alt="@Model.Nome" />
+        }
+        else
+        {
+            <div class="product-image-placeholder">
+                <i class="bi bi-image"></i>
+            </div>
+        }
+    </section>
+
+    <section class="product-details-content">
+        <span class="product-category">
+            @(Model.Categoria?.Nome ?? "Sem categoria")
+        </span>
+
+        <h1>@Model.Nome</h1>
+
+        <p class="product-details-description">
+            @Model.Descricao
+        </p>
+
+        <div class="product-details-price">
+            @Model.Preco.ToString("C")
+        </div>
+
+        @if (Model.Estoque > 0)
+        {
+            <p class="text-success fw-semibold">
+                Em estoque: @Model.Estoque unidade(s)
+            </p>
+            
+            <a asp-controller="Carrinho" asp-action="Adicionar" asp-route-produtoId="@Model.Id" class="btn btn-warning btn-lg">
+                <i class="bi bi-cart-plus"></i>
+                Adicionar ao carrinho
+            </a>
+        }
+        else
+        {
+            <p class="text-danger fw-semibold">
+                Produto indisponível
+            </p>
+        }
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary btn-lg ms-2">
+            Voltar
+        </a>
+
+    </section>
+
+</div>

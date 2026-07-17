@@ -9,7 +9,15 @@
         <input asp-for="Email"class="form-control" readonly  />
     </div>
 
+    <div class="mb-3">
+        <label asp-for="PerfilSelecionado" class="form-label">Perfil</label>
 
+        <select asp-for="PerfilSelecionado"
+                asp-items="Model.Perfis"
+                class="form-control">
+            <option value="">Selecione um perfil</option>
+        </select>
+    </div>
 
     <button type="submit" class="btn btn-primary">
         Salvar

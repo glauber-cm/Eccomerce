@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Ecommerce.Web.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class ProdutoController : Controller
     {
         private readonly ProdutoService _service;

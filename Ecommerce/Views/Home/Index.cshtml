@@ -1,29 +1,182 @@
-﻿@model IEnumerable<Ecommerce.Domain.Entities.Produto>
+﻿@model Ecommerce.Web.Models.HomeIndexViewModel
 
-<h2>Produtos</h2>
+@{
+    ViewData["Title"] = "Início";
+}
 
-<div class="row">
-    @foreach(var item in Model)
+<section class="home-banner mb-5">
+    <div class="home-banner-content">
+        <span class="home-banner-eyebrow">
+            Tecnologia, qualidade e praticidade
+        </span>
+
+        <h1>
+            Tudo que você procura em um só lugar
+        </h1>
+
+        <p>
+            Encontre produtos selecionados, acompanhe seus pedidos
+            e compre com segurança.
+        </p>
+
+        <div class="home-banner-actions">
+            <a asp-controller="Loja" asp-action="Index" class="btn btn-warning btn-lg">
+                Explorar produtos
+            </a>
+
+            @if (User.Identity?.IsAuthenticated != true)
+            {
+                <a asp-controller="Account" asp-action="Register" class="btn btn-outline-light btn-lg">
+                    Criar conta
+                </a>
+            }
+        </div>
+    </div>
+
+    <div class="home-banner-icon">
+        <i class="bi bi-bag-check"></i>
+    </div>
+</section>
+
+<section class="home-section mb-5">
+    <div class="home-section-header">
+        <div>
+            <span class="home-section-eyebrow">Navegue por</span>
+            <h2>Categorias em destaque</h2>
+        </div>
+
+        <a asp-controller="Loja" asp-action="Index" class="home-section-link">
+            Ver todos os produtos
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+    @if (!Model.Categorias.Any())
     {
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                @if (!string.IsNullOrEmpty(item.ImageUrl))
-                {
-                    <img src="~/images/produtos/@item.ImageUrl" class="card-img-top" style="height:220px; object-fit:cover" />
-                }
+        <div class="alert alert-info">
+            Nenhuma categoria cadastrada.
+        </div>
+    }
+    else
+    {
+        <div class="category-grid">
+            @foreach (var categoria in Model.Categorias)
+            {
+                <a asp-controller="Loja" asp-action="Index" asp-route-categoriaId="@categoria.Id" class="categoria-card">
 
-                <div class="card-body">
-                    <h5 class="card-title">@item.Nome</h5>
-                    <p class="card-text">@item.Descricao</p>
-                    <p><strong>@item.Preco.ToString("C")</strong></p>
+                    <div class="category-card-icon">
+                        <i class="bi bi-grid"></i>
+                    </div>
 
-                    <a asp-controller="Produto" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Detalhes</a>
-                    <a asp-controller="Carrinho" asp-action="Adicionar" asp-route-id="@item.Id" class="btn btn-success">Adicionar ao Carrinho</a>
+                    <div>
+                        <h3>@categoria.Nome</h3>
+                        <span>Ver produtos</span>
+                    </div>
+                </a>
+            }
+        </div>
+    }
+</section>
 
+<section class="home-section mb-5">
+    <div class="home-section-header">
+        <div>
+            <span class="home-section-eyebrow">Confira agora</span>
+            <h2>Produtos recentes</h2>
+        </div>
 
-                </div>
-            </div>
-        </div>            
+        <a asp-controller="Loja" asp-action="Index" asp-route-ordenacao="mais-recentes" class="home-section-link">
+            Ver novidades
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+    @if (!Model.ProdutosRecentes.Any())
+    {
+        <div class="empty-store">
+            <i class="bi bi-box-seam"></i>
+            <h3>Nenhum produto disponível</h3>
+        </div>
+    }
+    else
+    {
+        <div class="product-grid">
+            @foreach (var produto in Model.ProdutosRecentes)
+            {
+                <article class="product-card">
+                    <a asp-controller="Loja" asp-action="Details" asp-route-id="@produto.Id" class="product-image-container">
+                        @if (!string.IsNullOrWhiteSpace(produto.ImageUrl))
+                        {
+                            <img src="~/images/produtos/@produto.ImageUrl" alt="@produto.Nome" class="product-image" />
+                        }
+                        else
+                        {
+                            <div class="product-image-placeholder">
+                                <i class="bi bi-image"></i>
+                            </div>
+                        }
+                    </a>
+
+                    <div class="product-card-body">
+                        <span class="product-category">
+                            @(produto.Categoria?.Nome ?? "Sem categoria")
+                        </span>
+
+                        <h3 class="product-title">
+                            <a asp-controller="Loja" asp-action="Details" asp-route-id="@produto.Id">
+                                @produto.Nome
+                            </a>
+                        </h3>
+
+                        <p class="product-description">
+                            @produto.Descricao
+                        </p>
+
+                        <div class="product-price">
+                            @produto.Preco.ToString("C")
+                        </div>
+
+                        <div class="product-actions">
+                            <a asp-controller="Loja" asp-action="Details" asp-route-id="@produto.Id" class="btn btn-outline-dark">
+                                Detalhes
+                            </a>
+
+                            <a asp-controller="Carrinho" asp-action="Adicionar" asp-route-produtoId="@produto.Id" class="btn btn-warning">
+                                <i class="bi bi-cart-plus"></i>
+                                Adicionar
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
     }
 
-</div>
+</section>
+
+<section class="home-benefits">
+    <article>
+        <i class="bi bi-shield-check"></i>
+        <div>
+            <h3>Compra segura</h3>
+            <p>Seus dados protegidos durante todo o processo.</p>
+        </div>
+    </article>
+
+    <article>
+        <i class="bi bi-truck"></i>
+        <div>
+            <h3>Entrega acompanhada</h3>
+            <p>Acompanhe cada etapa do seu pedido.</p>
+        </div>
+    </article>
+
+    <article>
+        <i class="bi bi-credit-card"></i>
+        <div>
+            <h3>Pagamento facilitado</h3>
+            <p>Pix e cartão serão disponibilizados no checkout.</p>
+        </div>
+    </article>
+
+</section>

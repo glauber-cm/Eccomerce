@@ -48,5 +48,14 @@ namespace Ecommerce.Application.Service
         {
             await _repository.RemoverAsync(id);
         }
+
+        public async Task<(IReadOnlyList<Produto> Itens, int TotalItens)> BuscarLojaAsync(string? busca, Guid? categoriaId, string? ordenacao, int pagina, int tamanhoPagina)
+        {
+            pagina = Math.Max(pagina,1);
+
+            tamanhoPagina = tamanhoPagina is < 1 or > 50 ? 12 : tamanhoPagina;
+
+            return await _repository.BuscarLojaAsync(busca, categoriaId, ordenacao, pagina, tamanhoPagina);
+        }
     }
 }
